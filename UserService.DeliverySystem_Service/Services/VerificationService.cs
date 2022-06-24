@@ -49,22 +49,22 @@ namespace UserService.DeliverySystem_BAL.Services
             UserDto user = _verificationRepo.FindUser(userDto.Email);
             if (user == null) throw new Exception("User doesn't exist");
 
-            bool userAccepted = _verificationRepo.CheckIfUserAccepted(userDto.Email);
-            if (!userAccepted) throw new Exception("Not accepted");
-
-            TokenDto tokenDto = null;
+            //bool userAccepted = _verificationRepo.CheckIfUserAccepted(userDto.Email);
+            //if (!userAccepted) throw new Exception("Not accepted");
 
             if (BCrypt.Net.BCrypt.Verify(userDto.Password, user.Password))
             {
                 string token = GenerateToken(user);
 
-                tokenDto = new TokenDto()
+                TokenDto tokenDto = new TokenDto()
                 {
                     Text = token
                 };
+
+                return tokenDto;
             }
 
-            return tokenDto;
+            return null;
         }
 
 
@@ -83,7 +83,7 @@ namespace UserService.DeliverySystem_BAL.Services
 
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
-                //issuer: "http://localhost:44398"
+                //issuer: "http://localhost:44302"
                 claims: claims, 
                 expires: DateTime.Now.AddMinutes(60), 
                 signingCredentials: signinCredentials 
