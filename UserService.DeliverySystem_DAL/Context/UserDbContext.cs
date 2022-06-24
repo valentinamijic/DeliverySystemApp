@@ -22,6 +22,15 @@ namespace UserService.DeliverySystem_DAL.Context
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserDbContext).Assembly);
         }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("UserData", builder =>
+        //    {
+        //        builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+        //    });
+        //    base.OnConfiguring(optionsBuilder);
+        //}
     }
 
     public class UserContextFactory : IDesignTimeDbContextFactory<UserDbContext>
@@ -29,7 +38,7 @@ namespace UserService.DeliverySystem_DAL.Context
         public UserDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
-            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=User; Trusted_Connection=True; MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=(localdb)\\MSSQLLocalDB; Database=UserData; Trusted_Connection=True; MultipleActiveResultSets=true");
 
             return new UserDbContext(optionsBuilder.Options);
         }

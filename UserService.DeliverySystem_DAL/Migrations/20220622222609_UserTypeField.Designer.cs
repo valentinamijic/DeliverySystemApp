@@ -12,8 +12,8 @@ using UserService.DeliverySystem_DAL.Context;
 namespace UserService.DeliverySystem_DAL.Migrations
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20220620221022_Initial")]
-    partial class Initial
+    [Migration("20220622222609_UserTypeField")]
+    partial class UserTypeField
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,14 +43,6 @@ namespace UserService.DeliverySystem_DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("ImageData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ImageMimeType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -63,7 +55,7 @@ namespace UserService.DeliverySystem_DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TypeOfUser")
+                    b.Property<int>("UserType")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")

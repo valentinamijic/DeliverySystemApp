@@ -22,9 +22,7 @@ namespace UserService.DeliverySystem_DAL.Migrations
                     Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TypeOfUser = table.Column<int>(type: "int", nullable: false),
-                    ImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    ImageMimeType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TypeOfUser = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

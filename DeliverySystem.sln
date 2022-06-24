@@ -7,21 +7,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliverySystem_OcelotGatewa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UserService", "UserService", "{4E949911-FE4E-4C67-9242-08E2646A9FAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.DeliverySystem_Web", "UserService.DeliverySystem_Web\UserService.DeliverySystem_Web.csproj", "{3BC4EB6A-E1F8-4026-AE73-2A5151911550}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.DeliverySystem_Web", "UserService.DeliverySystem_Web\UserService.DeliverySystem_Web.csproj", "{3BC4EB6A-E1F8-4026-AE73-2A5151911550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.DeliverySystem_BAL", "UserService.DeliverySystem_Service\UserService.DeliverySystem_BAL.csproj", "{85C12414-068B-469E-B780-EC39D1F51830}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.DeliverySystem_BAL", "UserService.DeliverySystem_Service\UserService.DeliverySystem_BAL.csproj", "{85C12414-068B-469E-B780-EC39D1F51830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService.DeliverySystem_DAL", "UserService.DeliverySystem_DAL\UserService.DeliverySystem_DAL.csproj", "{1ACD9EFC-0712-4CD5-9CAD-1CE6D1571784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService.DeliverySystem_DAL", "UserService.DeliverySystem_DAL\UserService.DeliverySystem_DAL.csproj", "{1ACD9EFC-0712-4CD5-9CAD-1CE6D1571784}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RestaurantService", "RestaurantService", "{139FC80A-83EE-49C9-A6C9-F067D8E0A332}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantService.DeliverySystem_Web", "RestaurantService.DeliverySystem_Web\RestaurantService.DeliverySystem_Web.csproj", "{8A7E837E-83C5-4CBF-A2A7-17DAEDC7D0A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantService.DeliverySystem_Web", "RestaurantService.DeliverySystem_Web\RestaurantService.DeliverySystem_Web.csproj", "{8A7E837E-83C5-4CBF-A2A7-17DAEDC7D0A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantService.DeliverySystem_DAL", "RestaurantService.DeliverySystem_DAL\RestaurantService.DeliverySystem_DAL.csproj", "{95874136-37CD-4B52-B3CB-BAF465864C97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantService.DeliverySystem_DAL", "RestaurantService.DeliverySystem_DAL\RestaurantService.DeliverySystem_DAL.csproj", "{95874136-37CD-4B52-B3CB-BAF465864C97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantSercice.DeliverySystem_BAL", "RestaurantSercice.DeliverySystem_BAL\RestaurantSercice.DeliverySystem_BAL.csproj", "{35388EEE-67D7-44E5-8765-C9963E9F1C47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantSercice.DeliverySystem_BAL", "RestaurantSercice.DeliverySystem_BAL\RestaurantSercice.DeliverySystem_BAL.csproj", "{35388EEE-67D7-44E5-8765-C9963E9F1C47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliverySystem_Common", "DeliverySystem_Common\DeliverySystem_Common.csproj", "{5A3036C2-358C-439A-B8D1-805208D229F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliverySystem_Common", "DeliverySystem_Common\DeliverySystem_Common.csproj", "{5A3036C2-358C-439A-B8D1-805208D229F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliverySystem_MappingProfile", "DeliverySystem_MappingProfile\DeliverySystem_MappingProfile.csproj", "{FCE44D4E-7BFD-4489-9823-CBEE2611283A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{5A3036C2-358C-439A-B8D1-805208D229F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A3036C2-358C-439A-B8D1-805208D229F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A3036C2-358C-439A-B8D1-805208D229F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCE44D4E-7BFD-4489-9823-CBEE2611283A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCE44D4E-7BFD-4489-9823-CBEE2611283A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCE44D4E-7BFD-4489-9823-CBEE2611283A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCE44D4E-7BFD-4489-9823-CBEE2611283A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

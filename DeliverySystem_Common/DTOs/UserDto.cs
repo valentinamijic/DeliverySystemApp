@@ -16,10 +16,10 @@ namespace DeliverySystem_Common.DTOs
         public string Lastname { get; set; }
         public DateTime BirthDate { get; set; }
         public string Address { get; set; }
-        public int TypeOfUser { get; set; }
+        public int UserType { get; set; }
 
         // photo
-        public byte[] ImageData { get; set; }
-        public string ImageMimeType { get; set; }
+        //public byte[] ImageData { get; set; }
+        //public string ImageMimeType { get; set; }
     }
 }

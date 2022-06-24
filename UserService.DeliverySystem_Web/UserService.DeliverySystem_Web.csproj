@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -17,6 +19,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeliverySystem_Common\DeliverySystem_Common.csproj" />
+    <ProjectReference Include="..\DeliverySystem_MappingProfile\DeliverySystem_MappingProfile.csproj" />
+    <ProjectReference Include="..\UserService.DeliverySystem_DAL\UserService.DeliverySystem_DAL.csproj" />
+    <ProjectReference Include="..\UserService.DeliverySystem_Service\UserService.DeliverySystem_BAL.csproj" />
   </ItemGroup>
 
 </Project>

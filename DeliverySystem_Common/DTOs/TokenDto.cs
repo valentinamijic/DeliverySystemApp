@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UserService.DeliverySystem_DAL.Models.Enums
+namespace DeliverySystem_Common.DTOs
 {
-    public enum UserType
+    public  class TokenDto
     {
-        ADMINISTRATOR = 1, CUSTOMER = 2, DELIVERER = 3
+        public string Text { get; set; }
     }
 }

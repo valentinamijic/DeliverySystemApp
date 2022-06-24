@@ -17,11 +17,12 @@ namespace UserService.DeliverySystem_DAL.Models
         public string Lastname { get; set; }    
         public DateTime BirthDate { get; set; }
         public string Address { get; set; }
-        public UserType TypeOfUser { get; set; }
+        public UserType UserType { get; set; }
+        public bool Accepted { get; set; } = false;
 
         // photo
-        public byte[] ImageData { get; set; }
-        public string ImageMimeType { get; set; }
+       // public byte[] ImageData { get; set; }
+       // public string ImageMimeType { get; set; }
 
     }
 }
