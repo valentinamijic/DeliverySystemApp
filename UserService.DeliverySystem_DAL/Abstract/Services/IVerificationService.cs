@@ -9,7 +9,8 @@ namespace UserService.DeliverySystem_DAL.Abstract.Services
 {
     public interface IVerificationService
     {
-        UserDto AddUser(UserDto userDto);
+        TokenDto AddUser(UserDto userDto);
         TokenDto SignIn(UserSignInDto userDto);
+        TokenDto AddFacebookUser(FacebookDto fb);
     }
 }

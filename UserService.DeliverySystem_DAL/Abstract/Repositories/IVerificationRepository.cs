@@ -9,11 +9,11 @@ namespace UserService.DeliverySystem_DAL.Abstract.Repositories
 {
     public interface IVerificationRepository
     {
-        UserDto AddUser(UserDto userDto);
+        void AddUser(UserDto userDto);
         UserDto FindUser(string email);
         bool CheckIfUsernameExists(string username);
         bool CheckIfEmailExists(string email);
         bool CheckIfUserExists(string email);
-        bool CheckIfUserAccepted(string email);
+        bool? CheckIfUserAccepted(string email);
     }
 }

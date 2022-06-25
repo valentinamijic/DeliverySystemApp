@@ -19,7 +19,7 @@ namespace UserService.DeliverySystem_Web.Controllers
 
         [Route("register")]
         [HttpPost]
-        public ActionResult <UserDto> Register (UserDto user)
+        public ActionResult <TokenDto> Register (UserDto user)
         {
             return _verificationService.AddUser(user);
         }
@@ -29,6 +29,13 @@ namespace UserService.DeliverySystem_Web.Controllers
         public ActionResult <TokenDto> SignIn(UserSignInDto user)
         {
             return _verificationService.SignIn(user);
+        }
+
+        [Route("facebookRegister")]
+        [HttpPost]
+        public ActionResult<TokenDto> FacebookSignUp(FacebookDto user)
+        {
+            return _verificationService.AddFacebookUser(user);
         }
     }
 }

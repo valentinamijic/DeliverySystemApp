@@ -22,14 +22,14 @@ namespace UserService.DeliverySystem_DAL.Repositories
             _dbContext = dbContext;
         }
 
-        public UserDto AddUser(UserDto userDto)
+        public void AddUser(UserDto userDto)
         {
             User user = _mapper.Map<User>(userDto);
 
+            if (user.UserType == Models.Enums.UserType.CUSTOMER) user.Accepted = true;
+
             _dbContext.Add(user);
             _dbContext.SaveChanges();
-
-            return _mapper.Map<UserDto>(user);
         }
 
         public UserDto FindUser(string email)
@@ -62,17 +62,11 @@ namespace UserService.DeliverySystem_DAL.Repositories
             return true;
         }
 
-        public bool CheckIfUserAccepted(string email)
+        public bool? CheckIfUserAccepted(string email)
         {
             User dbEntity = _dbContext.Users.Where(x => x.Email == email).FirstOrDefault();
 
-            if (dbEntity != null)
-            {
-                if (dbEntity.Accepted) return true;
-                return false;
-            }
-
-            return false;
+            return dbEntity.Accepted;
         }
 
 

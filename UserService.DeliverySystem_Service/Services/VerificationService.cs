@@ -29,19 +29,29 @@ namespace UserService.DeliverySystem_BAL.Services
         }
 
 
-        public UserDto AddUser(UserDto userDto)
+        public TokenDto AddUser(UserDto userDto)
         {
             // First check if user with same username and email already exists
             bool usernameExists = _verificationRepo.CheckIfUsernameExists(userDto.Username);
-            if (usernameExists) throw new Exception("Username already exists");
+            if (usernameExists) throw new Exception("Username with this username already exists");
 
             bool emailExists = _verificationRepo.CheckIfEmailExists(userDto.Email);
-            if (usernameExists) throw new Exception("Email already exists");
+            if (emailExists) throw new Exception("User with this email already exists");
 
             HashPassword(userDto.Password, out string passwordHash);
             userDto.Password = passwordHash;
 
-            return _verificationRepo.AddUser(userDto); 
+            _verificationRepo.AddUser(userDto);
+
+            string token = GenerateToken(userDto);
+
+            TokenDto tokenDto = new TokenDto()
+            {
+                Text = token
+            };
+
+            return tokenDto;
+
         }
 
         public TokenDto SignIn(UserSignInDto userDto)
@@ -52,9 +62,39 @@ namespace UserService.DeliverySystem_BAL.Services
             //bool userAccepted = _verificationRepo.CheckIfUserAccepted(userDto.Email);
             //if (!userAccepted) throw new Exception("Not accepted");
 
-            if (BCrypt.Net.BCrypt.Verify(userDto.Password, user.Password))
+            if (user.Email == userDto.Email && user.Password != null)
             {
-                string token = GenerateToken(user);
+                if (BCrypt.Net.BCrypt.Verify(userDto.Password, user.Password))
+                {
+                    string token = GenerateToken(user);
+
+                    TokenDto tokenDto = new TokenDto()
+                    {
+                        Text = token
+                    };
+
+                    return tokenDto;
+                }
+            }
+            throw new Exception("Provided email or password was not correct!");
+        }
+
+        public TokenDto AddFacebookUser(FacebookDto fb)
+        {
+            // First check if user exists
+            bool userExists = _verificationRepo.CheckIfUserExists(fb.Email);
+
+            UserDto facebookUser = new UserDto()
+            {
+                Email = fb.Email,
+                Name = fb.Name,
+                Lastname = fb.Lastname,
+                UserType = 2,
+            };
+
+            if (userExists)
+            {
+                string token = GenerateToken(facebookUser);
 
                 TokenDto tokenDto = new TokenDto()
                 {
@@ -64,10 +104,18 @@ namespace UserService.DeliverySystem_BAL.Services
                 return tokenDto;
             }
 
-            return null;
+            // If user doesn't exist, create it and then login
+            _verificationRepo.AddUser(facebookUser);
+
+            string token2 = GenerateToken(facebookUser);
+
+            TokenDto tokenDto2 = new TokenDto()
+            {
+                Text = token2
+            };
+
+            return tokenDto2;
         }
-
-
 
 
 
