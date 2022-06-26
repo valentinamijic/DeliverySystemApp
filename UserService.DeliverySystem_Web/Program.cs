@@ -60,7 +60,9 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddTransient<IVerificationService, VerificationService>();
+builder.Services.AddTransient<IUserService, UserService.DeliverySystem_BAL.Services.UserService>();
 builder.Services.AddTransient<IVerificationRepository, VerificationRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 
 var mapperConfig = new MapperConfiguration(mc =>
 {

@@ -14,6 +14,7 @@ namespace DeliverySystem_MappingProfile
         public MappingProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
+            CreateMap<User, LoggedDto>().ReverseMap();
         }
     }
 }
