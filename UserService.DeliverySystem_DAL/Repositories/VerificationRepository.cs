@@ -27,6 +27,7 @@ namespace UserService.DeliverySystem_DAL.Repositories
             User user = _mapper.Map<User>(userDto);
 
             if (user.UserType == Models.Enums.UserType.CUSTOMER) user.Accepted = true;
+            else user.Accepted = null;
 
             _dbContext.Add(user);
             _dbContext.SaveChanges();

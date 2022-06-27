@@ -19,5 +19,8 @@ namespace UserService.DeliverySystem_DAL.Abstract.Services
         bool HandleUsernameAdd(UsernameHandleDto usernameHandle);
         bool HandleAddressAdd(AddressHandleDto addressHandle);
         DateTime? HandleDateAdd(DateHandleDto dateDto);
+        List<DelivererDto> FindDeliverers();
+        bool VerifyUser(VerifyDto verifyDto);
+        bool RejectUser(VerifyDto verifyDto);
     }
 }

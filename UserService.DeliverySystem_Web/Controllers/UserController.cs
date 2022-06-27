@@ -87,5 +87,26 @@ namespace UserService.DeliverySystem_Web.Controllers
         {
             return _userService.HandleDateAdd(dateHandle);
         }
+
+        [Route("deliverers")]
+        [HttpGet]
+        public ActionResult<List<DelivererDto>> GetDeliverers()
+        {
+            return _userService.FindDeliverers();
+        }
+
+        [Route("verify")]
+        [HttpPut]
+        public ActionResult<bool> Verify(VerifyDto verifyDto)
+        {
+            return _userService.VerifyUser(verifyDto);
+        }
+
+        [Route("reject")]
+        [HttpPut]
+        public ActionResult<bool> Reject(VerifyDto verifyDto)
+        {
+            return _userService.RejectUser(verifyDto);
+        }
     }
 }

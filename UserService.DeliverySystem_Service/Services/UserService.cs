@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using DeliverySystem_Common.DTOs;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Logging;
+using MimeKit;
+using MimeKit.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +37,6 @@ namespace UserService.DeliverySystem_BAL.Services
             }
             throw new Exception("Email is empty");
         }
-
 
         public bool HandleNameChange(NameHandleDto nameDto)
         {
@@ -203,11 +206,107 @@ namespace UserService.DeliverySystem_BAL.Services
             throw new Exception("Email is empty");
         }
 
+        public List<DelivererDto> FindDeliverers()
+        {
+           return _userRepo.AllDeliverers();
+        }
+
+        public bool VerifyUser(VerifyDto verifyDto)
+        {
+            if (!String.IsNullOrWhiteSpace(verifyDto.Email))
+            {
+                bool? oldState = null;
+                LoggedDto loggedUser = _userRepo.FindUserByEmail(verifyDto.Email);
+                if (loggedUser == null) throw new Exception("User doesn't exist");
+                oldState = _userRepo.GetAcceptance(verifyDto.Email);
+
+                if (oldState != true)
+                {
+                    if (_userRepo.VerifyUser(verifyDto))
+                    {
+                        NotifyDelivererAboutVerify(verifyDto.Email, loggedUser.Username);
+                        return true;
+                    }
+                    return false;
+                } return true;
+
+            }
+            throw new Exception("Email is empty");
+        }
+
+        public bool RejectUser(VerifyDto verifyDto)
+        {
+            if (!String.IsNullOrWhiteSpace(verifyDto.Email))
+            {
+                bool? oldState = null;
+                LoggedDto loggedUser = _userRepo.FindUserByEmail(verifyDto.Email);
+                if (loggedUser == null) throw new Exception("User doesn't exist");
+                oldState = _userRepo.GetAcceptance(verifyDto.Email);
+
+                if (oldState != false)
+                {
+                    if (_userRepo.RejectUser(verifyDto))
+                    {
+                        NotifyDelivererAboutRejection(verifyDto.Email);
+                        return true;
+                    }
+                    return false;
+                } return true;
+            }
+            throw new Exception("Email is empty");
+        }
+
+
+
         private void HashPassword(string password, out string passwordHash)
         {
             passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
         }
+        private void NotifyDelivererAboutVerify(string email, string username)
+        {
+            var message = new MimeMessage();
 
+            message.From.Add(MailboxAddress.Parse("valentinamijic@gmail.com"));
+            message.To.Add(MailboxAddress.Parse("valentinamijic@gmail.com")); //here goes actual mail
+            message.Subject = "DeliverySystemApp - REGISTRATION ACCEPTED";
 
+            message.Body = new TextPart(TextFormat.Html)
+            {
+                Text =
+                "Dear " + username + 
+                "\n\n, your registration has been accepted." +
+                "\n\nYou can now sign into your account and enjoy the services provided by DeliverySystemApp!" +
+                "\n\n\n\nDeliverySystemApp Admin Team"
+            };
+
+            using var mail = new SmtpClient();
+            mail.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            mail.Authenticate("valentinamijic@gmail.com", "rxiljvovoxhxqfty");
+            mail.Send(message);
+            mail.Disconnect(true);
+        }
+        private void NotifyDelivererAboutRejection(string email)
+        {
+            var message = new MimeMessage();
+
+            message.From.Add(MailboxAddress.Parse("valentinamijic@gmail.com"));
+            message.To.Add(MailboxAddress.Parse("valentinamijic@gmail.com")); //here goes actual mail
+            message.Subject = "DeliverySystemApp - REGISTRATION REJECTTED";
+
+            message.Body = new TextPart(TextFormat.Html)
+            {
+                Text =
+                "Dear " +
+                "\n\n, your registration has been rejected." +
+                "\n\nYou can still register as a customer and enjoy the services provided by DeliverySystemApp!" +
+                "\n\n\n\nDeliverySystemApp Admin Team"
+            };
+
+            using var mail = new SmtpClient();
+            mail.Connect("smtp.gmail.com", 587, SecureSocketOptions.StartTls);
+            mail.Authenticate("valentinamijic@gmail.com", "rxiljvovoxhxqfty");
+            mail.Send(message);
+            mail.Disconnect(true);
+        }
     }
 }

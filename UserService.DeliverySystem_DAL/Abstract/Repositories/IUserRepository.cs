@@ -20,6 +20,10 @@ namespace UserService.DeliverySystem_DAL.Abstract.Repositories
         string FindPassword(string email);
         bool AddUsername(UsernameHandleDto usernameHandle);
         bool AddAddress(AddressHandleDto addressDto);
-        DateTime? AddDate(DateHandleDto dateDto);    
+        DateTime? AddDate(DateHandleDto dateDto);
+        List<DelivererDto> AllDeliverers();
+        bool VerifyUser(VerifyDto verifyDto);
+        bool RejectUser(VerifyDto verifyDto);
+        bool? GetAcceptance(string email);
     }
 }

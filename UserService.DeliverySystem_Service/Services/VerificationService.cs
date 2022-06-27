@@ -59,8 +59,9 @@ namespace UserService.DeliverySystem_BAL.Services
             UserDto user = _verificationRepo.FindUser(userDto.Email);
             if (user == null) throw new Exception("User doesn't exist");
 
-            //bool userAccepted = _verificationRepo.CheckIfUserAccepted(userDto.Email);
-            //if (!userAccepted) throw new Exception("Not accepted");
+            bool? userAccepted = _verificationRepo.CheckIfUserAccepted(userDto.Email);
+            if (userAccepted == null) throw new Exception("Request is still in process!");
+            if (userAccepted == false) throw new Exception("User not accepted!");
 
             if (user.Email == userDto.Email && user.Password != null)
             {

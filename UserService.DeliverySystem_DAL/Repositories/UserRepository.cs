@@ -152,5 +152,41 @@ namespace UserService.DeliverySystem_DAL.Repositories
             _dbContext.SaveChanges();
             return dbEntity.BirthDate;
         }
+
+        public List<DelivererDto> AllDeliverers()
+        {
+            return _mapper.Map<List<DelivererDto>>(_dbContext.Users.Where(x => x.UserType == Models.Enums.UserType.DELIVERER).ToList());
+        }
+
+        public bool VerifyUser(VerifyDto verifyDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == verifyDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Accepted = true;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool RejectUser(VerifyDto verifyDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == verifyDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Accepted = false;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool? GetAcceptance(string email)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == email).FirstOrDefault();
+
+            if (dbEntity != null) return dbEntity.Accepted;
+
+            return null;
+        }
     }
 }
