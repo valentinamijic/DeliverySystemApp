@@ -25,7 +25,132 @@ namespace UserService.DeliverySystem_DAL.Repositories
         public LoggedDto FindUserByEmail(string email)
         {
             User dbEntity = _dbContext.Users.Where(x => x.Email == email).FirstOrDefault();
-            return _mapper.Map<LoggedDto>(dbEntity);
+
+            if (dbEntity != null)
+            {
+                LoggedDto logged = _mapper.Map<LoggedDto>(dbEntity);
+
+                if (dbEntity.Password != null) logged.HasPassword = true;
+                else logged.HasPassword = false;
+
+                return logged;
+            } return null;
+        }
+
+        public bool ChangeName(NameHandleDto nameDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == nameDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Name = nameDto.Name;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool CheckIfUsernameExists(string username)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Username == username).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+            return true;
+        }
+
+        public bool ChangeUsername(UsernameHandleDto nameDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == nameDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Username = nameDto.Username;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool ChangeLastname(LastnameHandleDto lastnameDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == lastnameDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Lastname = lastnameDto.Lastname;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool ChangeAddress(AddressHandleDto addressDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == addressDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Address = addressDto.Address;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool ChangeDate(DateHandleDto dateDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == dateDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.BirthDate = dateDto.Date;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool ChangePassword(PasswordHandleDto passwordDto, string hash)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == passwordDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Password = hash;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public string FindPassword(string email)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == email).FirstOrDefault();
+
+            if (dbEntity != null) return dbEntity.Password;
+            
+            return null;
+        }
+
+        public bool AddUsername(UsernameHandleDto usernameHandle)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == usernameHandle.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Username = usernameHandle.Username;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public bool AddAddress(AddressHandleDto addressHandle)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == addressHandle.Email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.Address = addressHandle.Address;
+            _dbContext.SaveChanges();
+            return true;
+        }
+
+        public DateTime? AddDate(DateHandleDto dateDto)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == dateDto.Email).FirstOrDefault();
+
+            if (dbEntity == null) return null;
+
+            dbEntity.BirthDate = dateDto.Date;
+            _dbContext.SaveChanges();
+            return dbEntity.BirthDate;
         }
     }
 }

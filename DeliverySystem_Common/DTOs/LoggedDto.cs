@@ -14,5 +14,7 @@ namespace DeliverySystem_Common.DTOs
         public string Lastname { get; set; }
         public DateTime BirthDate { get; set; }
         public string Address { get; set; }
+        public bool HasPassword { get; set; }
+        public int UserType { get; set; }
     }
 }
