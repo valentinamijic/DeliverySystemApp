@@ -1,4 +1,4 @@
-﻿using DeliverySystem_Common.DTOs;
+﻿using DeliverySystem_Common.DTOs.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserService.DeliverySystem_DAL.Abstract.Services;

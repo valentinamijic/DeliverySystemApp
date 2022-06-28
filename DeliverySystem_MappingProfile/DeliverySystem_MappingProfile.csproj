@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RestaurantService.DeliverySystem_DAL\RestaurantService.DeliverySystem_DAL.csproj" />
     <ProjectReference Include="..\UserService.DeliverySystem_DAL\UserService.DeliverySystem_DAL.csproj" />
   </ItemGroup>
 

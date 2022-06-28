@@ -1,4 +1,4 @@
-﻿using DeliverySystem_Common.DTOs;
+﻿using DeliverySystem_Common.DTOs.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

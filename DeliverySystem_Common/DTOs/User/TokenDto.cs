@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliverySystem_Common.DTOs
+namespace DeliverySystem_Common.DTOs.User
 {
-    public class VerifyDto
+    public class TokenDto
     {
-        public string Email { get; set; }
+        public string Text { get; set; }
     }
 }

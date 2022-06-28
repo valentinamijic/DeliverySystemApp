@@ -4,14 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliverySystem_Common.DTOs
+namespace DeliverySystem_Common.DTOs.User
 {
-    public class DelivererDto
+    public class NameHandleDto
     {
         public string Email { get; set; }
-        public string Username { get; set; }
         public string Name { get; set; }
-        public string Lastname { get; set; }
-        public bool? Accepted { get; set; }
     }
 }

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="MailKit" Version="3.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
@@ -19,6 +20,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeliverySystem_MappingProfile\DeliverySystem_MappingProfile.csproj" />
+    <ProjectReference Include="..\RestaurantSercice.DeliverySystem_BAL\RestaurantService.DeliverySystem_BAL.csproj" />
+    <ProjectReference Include="..\RestaurantService.DeliverySystem_DAL\RestaurantService.DeliverySystem_DAL.csproj" />
   </ItemGroup>
 
 </Project>

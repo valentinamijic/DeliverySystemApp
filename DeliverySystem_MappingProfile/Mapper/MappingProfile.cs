@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using DeliverySystem_Common.DTOs;
+using DeliverySystem_Common.DTOs.Restaurant;
+using DeliverySystem_Common.DTOs.User;
+using RestaurantService.DeliverySystem_DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,8 @@ namespace DeliverySystem_MappingProfile
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<User, LoggedDto>().ReverseMap();
             CreateMap<User, DelivererDto>().ReverseMap();
+            CreateMap<Product, ProductDto>().ReverseMap();
+            CreateMap<Component, ComponentDto>().ReverseMap();
         }
     }
 }

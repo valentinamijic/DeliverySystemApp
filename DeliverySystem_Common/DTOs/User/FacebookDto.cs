@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliverySystem_Common.DTOs
+namespace DeliverySystem_Common.DTOs.User
 {
-    public class UserSignInDto
+    public class FacebookDto
     {
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string Name { get; set; }
+        public string Lastname { get; set; }
     }
 }

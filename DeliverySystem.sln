@@ -19,11 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantService.DeliveryS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantService.DeliverySystem_DAL", "RestaurantService.DeliverySystem_DAL\RestaurantService.DeliverySystem_DAL.csproj", "{95874136-37CD-4B52-B3CB-BAF465864C97}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantSercice.DeliverySystem_BAL", "RestaurantSercice.DeliverySystem_BAL\RestaurantSercice.DeliverySystem_BAL.csproj", "{35388EEE-67D7-44E5-8765-C9963E9F1C47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantService.DeliverySystem_BAL", "RestaurantSercice.DeliverySystem_BAL\RestaurantService.DeliverySystem_BAL.csproj", "{35388EEE-67D7-44E5-8765-C9963E9F1C47}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliverySystem_Common", "DeliverySystem_Common\DeliverySystem_Common.csproj", "{5A3036C2-358C-439A-B8D1-805208D229F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeliverySystem_MappingProfile", "DeliverySystem_MappingProfile\DeliverySystem_MappingProfile.csproj", "{FCE44D4E-7BFD-4489-9823-CBEE2611283A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeliverySystem_MappingProfile", "DeliverySystem_MappingProfile\DeliverySystem_MappingProfile.csproj", "{FCE44D4E-7BFD-4489-9823-CBEE2611283A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="MailKit" Version="3.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
@@ -22,6 +18,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RestaurantService.DeliverySystem_DAL\RestaurantService.DeliverySystem_DAL.csproj" />
   </ItemGroup>
 
 </Project>

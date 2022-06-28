@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DeliverySystem_Common.DTOs;
+using DeliverySystem_Common.DTOs.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;

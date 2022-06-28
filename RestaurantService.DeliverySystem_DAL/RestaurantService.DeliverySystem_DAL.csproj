@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\Services\" />
-    <Folder Include="Abstract\Repositories\" />
-    <Folder Include="Configurations\" />
-    <Folder Include="DbContext\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="MailKit" Version="3.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
@@ -26,6 +18,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeliverySystem_Common\DeliverySystem_Common.csproj" />
+    <ProjectReference Include="..\UserService.DeliverySystem_DAL\UserService.DeliverySystem_DAL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DeliverySystem_Common.DTOs
+namespace RestaurantService.DeliverySystem_DAL.Models
 {
-    public class NameHandleDto
+    public class Component
     {
-        public string Email { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

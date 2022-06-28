@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DeliverySystem_Common.DTOs;
+using DeliverySystem_Common.DTOs.User;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
