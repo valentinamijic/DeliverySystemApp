@@ -12,7 +12,7 @@ using RestaurantService.DeliverySystem_DAL.Context;
 namespace RestaurantService.DeliverySystem_DAL.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    [Migration("20220628183414_Initial")]
+    [Migration("20220629201329_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

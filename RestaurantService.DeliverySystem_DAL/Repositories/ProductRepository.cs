@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DeliverySystem_Common.DTOs.Restaurant;
+using Microsoft.EntityFrameworkCore;
 using RestaurantService.DeliverySystem_DAL.Abstract;
 using RestaurantService.DeliverySystem_DAL.Abstract.Repositories;
 using RestaurantService.DeliverySystem_DAL.Context;
@@ -48,18 +49,67 @@ namespace RestaurantService.DeliverySystem_DAL.Repositories
 
         public bool CheckIfProductExists(ProductDto productDto)
         {
-            Product dbEntity = _dbContext.Products.Where(x => x.Name == productDto.Name).FirstOrDefault();
+            List<Product> dbEntity = _dbContext.Products.Include("AllComponents").Where(x => x.Name == productDto.Name).ToList();
 
             if (dbEntity != null)
             {
-                if (dbEntity.AllComponents.Count == productDto.Components.Count)
+                bool same = false;
+                bool areListsTheSame = false;
+
+                foreach (var listItem in dbEntity)
                 {
-                    return String.Join(",", dbEntity.AllComponents) == String.Join(",", productDto.Components);
+                    foreach (var newComp in productDto.Components)
+                    {
+                        foreach (var oldComp in listItem.AllComponents)
+                        {
+                            if (newComp.Name == oldComp.Name)
+                            {
+                                same = true; 
+                                break;
+                            }
+                        }
+
+                        if (!same)
+                        {
+                            areListsTheSame = false;
+                            same = false;
+                            break;
+                        }
+                        else
+                        {
+                            areListsTheSame = true;
+                            same = false;
+                        }
+                    }
                 }
 
-                return false;
+                return areListsTheSame;
+
             }
             return false;
+        }
+
+        public List<ProductDto> GetAllProducts()
+        {
+            List<Product> products = _dbContext.Products.Include("AllComponents").ToList();
+
+            List<ProductDto> productsDto = _mapper.Map<List<ProductDto>>(products);
+
+            List<ComponentDto> components = new List<ComponentDto>();
+
+            for (int i=0; i<products.Count; i++)
+            {
+                if (products[i].AllComponents != null)
+                {
+                    foreach (var component in products[i].AllComponents)
+                    {
+                        components.Add(_mapper.Map<ComponentDto>(component));
+                    }
+                    productsDto[i].Components = components;
+                    components = new List<ComponentDto>();
+                }
+            }
+            return productsDto;
         }
     }
 }

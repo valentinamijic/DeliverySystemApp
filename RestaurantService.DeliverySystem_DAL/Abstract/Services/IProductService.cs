@@ -10,5 +10,6 @@ namespace RestaurantService.DeliverySystem_DAL.Abstract.Services
     public interface IProductService
     {
         bool RegisterNewProduct(ProductDto productDto);
+        List<ProductDto> GetAllProducts();
     }
 }

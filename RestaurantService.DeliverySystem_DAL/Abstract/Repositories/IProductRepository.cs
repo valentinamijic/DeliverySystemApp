@@ -11,5 +11,6 @@ namespace RestaurantService.DeliverySystem_DAL.Abstract.Repositories
     {
         bool CheckIfProductExists(ProductDto productDto);
         bool AddProduct(ProductDto productDto);
+        List<ProductDto> GetAllProducts();
     }
 }

@@ -21,6 +21,11 @@ namespace RestaurantService.DeliverySystem_BAL.Services
             _productRepo = productRepo;
         }
 
+        public List<ProductDto> GetAllProducts()
+        {
+            return _productRepo.GetAllProducts();
+        }
+
         public bool RegisterNewProduct(ProductDto productDto)
         {
             bool exists = _productRepo.CheckIfProductExists(productDto);

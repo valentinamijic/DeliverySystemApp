@@ -22,5 +22,12 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         {
             return _productService.RegisterNewProduct(product);
         }
+
+        [Route("products")]
+        [HttpGet]
+        public ActionResult<List<ProductDto>> AddProduct()
+        {
+            return _productService.GetAllProducts();
+        }
     }
 }
