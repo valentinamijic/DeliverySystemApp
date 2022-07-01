@@ -11,5 +11,6 @@ namespace DeliverySystem_Common.DTOs.Restaurant
         public string Name { get; set; }
         public int Price { get; set; }
         public List<ComponentDto> Components { get; set; }
+        public int Amount { get; set; } = 0;
     }
 }
