@@ -11,6 +11,7 @@ namespace RestaurantService.DeliverySystem_DAL.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
-        public List<Component> AllComponents { get; set; }
+        public List<Component> Components { get; set; } = new List<Component>();
+        public int Amount { get; set; } = 0;
     }
 }

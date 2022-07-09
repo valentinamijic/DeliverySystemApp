@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace DeliverySystem_Common.DTOs.Restaurant
 {
-    public class CartItemDto
+    public class AcceptOrderDto
     {
-        public int Price { get; set; }
-        public ProductDto Product { get; set; } = new ProductDto();
-        public int Amount { get; set; } = 0;
+        public string Deliverer { get; set; }
+        public DateTime? TimeOfAcceptance { get; set; }
+        public int? AcceptedOrder { get; set; }
+
     }
 }

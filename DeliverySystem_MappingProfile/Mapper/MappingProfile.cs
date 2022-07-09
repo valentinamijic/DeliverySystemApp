@@ -20,6 +20,9 @@ namespace DeliverySystem_MappingProfile
             CreateMap<User, DelivererDto>().ReverseMap();
             CreateMap<Product, ProductDto>().ReverseMap();
             CreateMap<Component, ComponentDto>().ReverseMap();
+            CreateMap<Cart, CartDto>().ReverseMap();
+            CreateMap<CartItem, CartItemDto>().ReverseMap();
+            CreateMap<Order, OrderDisplayDto>().ReverseMap();
         }
     }
 }

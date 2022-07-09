@@ -8,12 +8,11 @@ namespace DeliverySystem_Common.DTOs.Restaurant
 {
     public class CartDto
     {
-        public int Id { get; set; }
         public string Email { get; set; }
-        public string DelivererEmail { get; set; }
         public List<CartItemDto> CartItems { get; set; } = new List<CartItemDto>();
         public string Comment { get; set; }
         public string Address { get; set; }
+        public int TotalAmount { get; set; }
         public DateTime TimeOfMakingOrder { get; set; }
     }
 }

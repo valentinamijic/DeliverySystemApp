@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantService.DeliverySystem_DAL.Context;
 
@@ -11,9 +12,10 @@ using RestaurantService.DeliverySystem_DAL.Context;
 namespace RestaurantService.DeliverySystem_DAL.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220704210356_OrderCart")]
+    partial class OrderCart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,9 +47,6 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
                     b.Property<DateTime?>("TimeOfMakingOrder")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TotalAmount")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Carts");
@@ -65,6 +64,9 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
@@ -116,12 +118,6 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("TimeOfAcceptingOrder")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TotalAmount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

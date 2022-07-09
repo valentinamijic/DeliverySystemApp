@@ -308,5 +308,12 @@ namespace UserService.DeliverySystem_BAL.Services
             mail.Send(message);
             mail.Disconnect(true);
         }
+
+        public bool HandlePhotoUpload(byte[]? ImageData, string? ImageMimeType, string email)
+        {
+            if (String.IsNullOrWhiteSpace(email)) throw new Exception("User can not be null");
+
+            return _userRepo.AddPhoto(ImageData, ImageMimeType, email);
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace DeliverySystem_Common.DTOs.User
         public string Address { get; set; }
         public bool HasPassword { get; set; }
         public int UserType { get; set; }
+        public string Image { get; set; }    
     }
 }

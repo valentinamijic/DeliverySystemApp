@@ -33,6 +33,11 @@ namespace UserService.DeliverySystem_DAL.Repositories
                 if (dbEntity.Password != null) logged.HasPassword = true;
                 else logged.HasPassword = false;
 
+                if (dbEntity.ImageData != null && dbEntity.ImageMimeType != null)
+                {
+                    logged.Image = "data:" + dbEntity.ImageMimeType + ";base64," + @Convert.ToBase64String(dbEntity.ImageData);
+                }
+
                 return logged;
             } return null;
         }
@@ -187,6 +192,20 @@ namespace UserService.DeliverySystem_DAL.Repositories
             if (dbEntity != null) return dbEntity.Accepted;
 
             return null;
+        }
+
+        public bool AddPhoto(byte[]? ImageData, string? ImageMimeType, string email)
+        {
+            User dbEntity = _dbContext.Users.Where(x => x.Email == email).FirstOrDefault();
+
+            if (dbEntity == null) return false;
+
+            dbEntity.ImageMimeType = ImageMimeType;
+            dbEntity.ImageData = ImageData;
+            _dbContext.SaveChanges();
+
+            return true;
+
         }
     }
 }

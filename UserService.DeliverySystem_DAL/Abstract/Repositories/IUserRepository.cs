@@ -25,5 +25,6 @@ namespace UserService.DeliverySystem_DAL.Abstract.Repositories
         bool VerifyUser(VerifyDto verifyDto);
         bool RejectUser(VerifyDto verifyDto);
         bool? GetAcceptance(string email);
+        bool AddPhoto(byte[]? ImageData, string? ImageMimeType, string email);
     }
 }

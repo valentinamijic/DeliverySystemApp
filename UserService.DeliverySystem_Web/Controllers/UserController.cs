@@ -108,5 +108,27 @@ namespace UserService.DeliverySystem_Web.Controllers
         {
             return _userService.RejectUser(verifyDto);
         }
+
+        [Route("addPhoto")]
+        [HttpPost]
+        public ActionResult<bool> AddPhoto()
+        {
+            var image = Request.Form.Files[0];
+            var email = Request.Form.Files[1];
+
+            var imageName = Path.GetFileName(image.FileName);
+            var emailName = Path.GetFileName(email.FileName);
+
+            var path = Directory.GetParent(Directory.GetCurrentDirectory()) + "\\UserService.DeliverySystem_DAL\\Photos\\" + imageName;
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
+            var imageMimeType = image.ContentType;
+            var imageData = System.IO.File.ReadAllBytes(path);
+
+            return _userService.HandlePhotoUpload(imageData, imageMimeType, emailName);
+        }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantService.DeliverySystem_DAL.Context;
 
@@ -11,9 +12,10 @@ using RestaurantService.DeliverySystem_DAL.Context;
 namespace RestaurantService.DeliverySystem_DAL.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220703210554_OrderTable")]
+    partial class OrderTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,37 +23,6 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.Cart", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("TimeOfMakingOrder")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("TotalAmount")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Carts");
-                });
 
             modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.CartItem", b =>
                 {
@@ -64,19 +35,22 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId")
+                    b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int>("productId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
+                    b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("productId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItem");
                 });
 
             modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.Component", b =>
@@ -109,24 +83,29 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Deliverer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("TimeOfAcceptingOrder")
+                    b.Property<DateTime?>("TimeOfMakingOrder")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TotalAmount")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
 
                     b.ToTable("Orders");
                 });
@@ -156,45 +135,34 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
 
             modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.CartItem", b =>
                 {
-                    b.HasOne("RestaurantService.DeliverySystem_DAL.Models.Cart", null)
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId");
+                    b.HasOne("RestaurantService.DeliverySystem_DAL.Models.Order", null)
+                        .WithMany("OrderedItems")
+                        .HasForeignKey("OrderId");
 
-                    b.HasOne("RestaurantService.DeliverySystem_DAL.Models.Product", "Product")
+                    b.HasOne("RestaurantService.DeliverySystem_DAL.Models.Product", "product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("productId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.Component", b =>
                 {
                     b.HasOne("RestaurantService.DeliverySystem_DAL.Models.Product", null)
-                        .WithMany("Components")
+                        .WithMany("AllComponents")
                         .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.Order", b =>
                 {
-                    b.HasOne("RestaurantService.DeliverySystem_DAL.Models.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-                });
-
-            modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.Cart", b =>
-                {
-                    b.Navigation("CartItems");
+                    b.Navigation("OrderedItems");
                 });
 
             modelBuilder.Entity("RestaurantService.DeliverySystem_DAL.Models.Product", b =>
                 {
-                    b.Navigation("Components");
+                    b.Navigation("AllComponents");
                 });
 #pragma warning restore 612, 618
         }

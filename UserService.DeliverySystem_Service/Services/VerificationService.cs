@@ -132,7 +132,7 @@ namespace UserService.DeliverySystem_BAL.Services
 
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
-                //issuer: "http://localhost:44302"
+                issuer: "http://localhost:4200",
                 claims: claims, 
                 expires: DateTime.Now.AddMinutes(60), 
                 signingCredentials: signinCredentials 

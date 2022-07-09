@@ -19,10 +19,8 @@ namespace UserService.DeliverySystem_DAL.Models
         public string? Address { get; set; }
         public UserType UserType { get; set; }
         public bool? Accepted { get; set; } = null;
-
-        // photo
-       // public byte[] ImageData { get; set; }
-       // public string ImageMimeType { get; set; }
+        public byte[]? ImageData { get; set; }
+        public string? ImageMimeType { get; set; }
 
     }
 }
