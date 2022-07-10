@@ -1,4 +1,5 @@
 ﻿using DeliverySystem_Common.DTOs.User;
+using DeliverySystem_Common.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace UserService.DeliverySystem_DAL.Abstract.Services
 {
     public interface IVerificationService
     {
-        TokenDto AddUser(UserDto userDto);
-        TokenDto SignIn(UserSignInDto userDto);
-        TokenDto AddFacebookUser(FacebookDto fb);
+        KeyValuePair<ReturnValue, TokenDto> AddUser(UserDto userDto);
+        KeyValuePair<ReturnValue, TokenDto> SignIn(UserSignInDto userDto);
+        KeyValuePair<ReturnValue, TokenDto> AddFacebookUser(FacebookDto fb);
     }
 }

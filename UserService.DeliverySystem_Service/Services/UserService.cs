@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DeliverySystem_Common.DTOs.User;
+using DeliverySystem_Common.Enums;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Logging;
@@ -26,184 +27,159 @@ namespace UserService.DeliverySystem_BAL.Services
             _userRepo = userRepo;
         }
 
-        public LoggedDto FindUser(string email)
+        public KeyValuePair<ReturnValue, LoggedDto> FindUser(string email)
         {
             if(!String.IsNullOrWhiteSpace(email))
             {
                 LoggedDto loggedUser = _userRepo.FindUserByEmail(email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+                if (loggedUser == null) return new KeyValuePair<ReturnValue, LoggedDto>(ReturnValue.ERROR_OCCURED, null);
 
-                return loggedUser;
+                return new KeyValuePair<ReturnValue, LoggedDto>(ReturnValue.OK, loggedUser);
             }
-            throw new Exception("Email is empty");
+            return new KeyValuePair<ReturnValue, LoggedDto>(ReturnValue.ERROR_OCCURED, null);
         }
 
-        public bool HandleNameChange(NameHandleDto nameDto)
+        public KeyValuePair<ReturnValue, bool> HandleNameChange(NameHandleDto nameDto)
         {
-            if (!String.IsNullOrWhiteSpace(nameDto.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(nameDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(nameDto.Email) || String.IsNullOrWhiteSpace(nameDto.Name))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
 
-                if (!String.IsNullOrEmpty(nameDto.Name))
-                {
-                    return _userRepo.ChangeName(nameDto);
-                }
-                throw new Exception("New name is empty");
-            }
-            throw new Exception("Email is empty");
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(nameDto.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+
+            bool retVal =  _userRepo.ChangeName(nameDto);
+
+            if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
         }
 
-        public bool HandleUsernameChange(UsernameHandleDto usernameDto)
+        public KeyValuePair<ReturnValue, bool> HandleUsernameChange(UsernameHandleDto usernameDto)
         {
-            if (!String.IsNullOrWhiteSpace(usernameDto.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(usernameDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(usernameDto.Email) || String.IsNullOrWhiteSpace(usernameDto.Username))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
 
-                if (!String.IsNullOrEmpty(usernameDto.Username))
-                {
-                    bool exists = _userRepo.CheckIfUsernameExists(usernameDto.Username);
-                    if (exists) return false;
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(usernameDto.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
 
-                    return _userRepo.ChangeUsername(usernameDto);
-                }
-                throw new Exception("New username is empty");
-            }
-            throw new Exception("Email is empty");
+            bool exists = _userRepo.CheckIfUsernameExists(usernameDto.Username);
+            if (exists) return new KeyValuePair<ReturnValue, bool>(ReturnValue.USERNAME_EXISTS, false);
+
+            bool retVal = _userRepo.ChangeUsername(usernameDto);
+
+            if(!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
         }
 
-        public bool HandleLastnameChange(LastnameHandleDto lastnameDto)
+        public KeyValuePair<ReturnValue, bool> HandleLastnameChange(LastnameHandleDto lastnameDto)
         {
-            if (!String.IsNullOrWhiteSpace(lastnameDto.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(lastnameDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(lastnameDto.Email) || String.IsNullOrWhiteSpace(lastnameDto.Lastname))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
 
-                if (!String.IsNullOrEmpty(lastnameDto.Lastname))
-                {
-                    return _userRepo.ChangeLastname(lastnameDto);
-                }
-                throw new Exception("New lastname is empty");
-            }
-            throw new Exception("Email is empty");
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(lastnameDto.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+
+            bool retVal = _userRepo.ChangeLastname(lastnameDto);
+
+            if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
         }
 
-        public bool HandleAddressChange(AddressHandleDto addressDto)
+        public KeyValuePair<ReturnValue, bool> HandleAddressChange(AddressHandleDto addressDto)
         {
-            if (!String.IsNullOrWhiteSpace(addressDto.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(addressDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(addressDto.Email) || String.IsNullOrWhiteSpace(addressDto.Address))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
 
-                if (!String.IsNullOrEmpty(addressDto.Address))
-                {
-                    return _userRepo.ChangeAddress(addressDto);
-                }
-                throw new Exception("New address is empty");
-            }
-            throw new Exception("Email is empty");
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(addressDto.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+
+            bool retVal = _userRepo.ChangeAddress(addressDto);
+
+            if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
         }
 
-        public bool HandleDateChange(DateHandleDto dateDto)
+        public KeyValuePair<ReturnValue, bool> HandleDateChange(DateHandleDto dateDto)
         {
-            if (!String.IsNullOrWhiteSpace(dateDto.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(dateDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(dateDto.Email) || DateTime.Compare(dateDto.Date, new DateTime()) == 0)
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
 
-                DateTime startDate = new DateTime();
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(dateDto.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
 
-                if (DateTime.Compare(dateDto.Date, startDate) != 0)
-                {
-                    return _userRepo.ChangeDate(dateDto);
-                }
-                throw new Exception("New date is empty");
-            }
-            throw new Exception("Email is empty");
+            bool retVal = _userRepo.ChangeDate(dateDto);
+
+            if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
         }
 
-        public bool HandlePasswordChange(PasswordHandleDto passwordDto)
+        public KeyValuePair<ReturnValue, bool> HandlePasswordChange(PasswordHandleDto passwordDto)
         {
-            if (!String.IsNullOrWhiteSpace(passwordDto.Email))
+            if (String.IsNullOrWhiteSpace(passwordDto.Email) || String.IsNullOrWhiteSpace(passwordDto.Password) 
+                || String.IsNullOrWhiteSpace(passwordDto.OldPassword))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
+
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(passwordDto.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+
+            string password = _userRepo.FindPassword(passwordDto.Email);
+            if (password != null)
             {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(passwordDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
-
-                if (!String.IsNullOrEmpty(passwordDto.Password))
+                if (BCrypt.Net.BCrypt.Verify(passwordDto.OldPassword, password))
                 {
-                    string password = _userRepo.FindPassword(passwordDto.Email);
+                    HashPassword(passwordDto.Password, out string passwordHash);
 
-                    if (password != null)
-                    {
-                        if (BCrypt.Net.BCrypt.Verify(passwordDto.OldPassword, password))
-                        {
+                    bool retVal = _userRepo.ChangePassword(passwordDto, passwordHash);
 
-                            HashPassword(passwordDto.Password, out string passwordHash);
-
-                            return _userRepo.ChangePassword(passwordDto, passwordHash);
-                        }
-                        return false;
-                    }
+                    if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.INVALID_PASSWORD, false);
+                    return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
                 }
-                throw new Exception("New password is empty");
             }
-            throw new Exception("Email is empty");
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.INVALID_PASSWORD, false);
         }
 
-        public bool HandleUsernameAdd(UsernameHandleDto usernameHandle)
+        public KeyValuePair<ReturnValue, bool> HandleUsernameAdd(UsernameHandleDto usernameHandle)
         {
-            if (!String.IsNullOrWhiteSpace(usernameHandle.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(usernameHandle.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(usernameHandle.Email) || String.IsNullOrWhiteSpace(usernameHandle.Username))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
 
-                if (!String.IsNullOrEmpty(usernameHandle.Username))
-                {
-                    bool exists = _userRepo.CheckIfUsernameExists(usernameHandle.Username);
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(usernameHandle.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
 
-                    if (exists) return false;
+            bool exists = _userRepo.CheckIfUsernameExists(usernameHandle.Username);
+            if (exists) return new KeyValuePair<ReturnValue, bool>(ReturnValue.USERNAME_EXISTS, false);
 
-                    return _userRepo.AddUsername(usernameHandle);
-                }
-                throw new Exception("New username is empty");
-            }
-            throw new Exception("Email is empty");
+            bool retVal = _userRepo.AddUsername(usernameHandle);
+
+            if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
         }
 
-        public bool HandleAddressAdd(AddressHandleDto addressHandle)
+        public KeyValuePair<ReturnValue, bool> HandleAddressAdd(AddressHandleDto addressHandle)
         {
-            if (!String.IsNullOrWhiteSpace(addressHandle.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(addressHandle.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(addressHandle.Email) || String.IsNullOrWhiteSpace(addressHandle.Address))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
 
-                if (!String.IsNullOrEmpty(addressHandle.Address))
-                {
-                    return _userRepo.AddAddress(addressHandle);
-                }
-                throw new Exception("New address is empty");
-            }
-            throw new Exception("Email is empty");
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(addressHandle.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+
+            bool retVal = _userRepo.AddAddress(addressHandle);
+
+            if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
         }
 
-        public DateTime? HandleDateAdd(DateHandleDto dateDto)
+        public KeyValuePair<ReturnValue, DateTime?> HandleDateAdd(DateHandleDto dateDto)
         {
-            if (!String.IsNullOrWhiteSpace(dateDto.Email))
-            {
-                LoggedDto loggedUser = _userRepo.FindUserByEmail(dateDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+            if (String.IsNullOrWhiteSpace(dateDto.Email) || DateTime.Compare(dateDto.Date, new DateTime()) == 0)
+                return new KeyValuePair<ReturnValue, DateTime?>(ReturnValue.EMPTY_FIELDS, null);
 
-                DateTime startDate = new DateTime();
+            LoggedDto loggedUser = _userRepo.FindUserByEmail(dateDto.Email);
+            if (loggedUser == null) return new KeyValuePair<ReturnValue, DateTime?>(ReturnValue.ERROR_OCCURED, null);
 
-                if (DateTime.Compare(dateDto.Date, startDate) != 0)
-                {
-                    return _userRepo.AddDate(dateDto);
-                }
+            DateTime? date = _userRepo.AddDate(dateDto);
+            if (date == null) return new KeyValuePair<ReturnValue, DateTime?>(ReturnValue.ERROR_OCCURED, null);
 
-                throw new Exception("New date is empty");
-            }
-            throw new Exception("Email is empty");
+            return new KeyValuePair<ReturnValue, DateTime?>(ReturnValue.OK, date);
         }
 
         public List<DelivererDto> FindDeliverers()
@@ -211,13 +187,14 @@ namespace UserService.DeliverySystem_BAL.Services
            return _userRepo.AllDeliverers();
         }
 
-        public bool VerifyUser(VerifyDto verifyDto)
+        public KeyValuePair<ReturnValue, bool> VerifyUser(VerifyDto verifyDto)
         {
             if (!String.IsNullOrWhiteSpace(verifyDto.Email))
             {
                 bool? oldState = null;
                 LoggedDto loggedUser = _userRepo.FindUserByEmail(verifyDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+                if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+
                 oldState = _userRepo.GetAcceptance(verifyDto.Email);
 
                 if (oldState != true)
@@ -225,22 +202,24 @@ namespace UserService.DeliverySystem_BAL.Services
                     if (_userRepo.VerifyUser(verifyDto))
                     {
                         NotifyDelivererAboutVerify(verifyDto.Email, loggedUser.Username);
-                        return true;
+                        return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
                     }
-                    return false;
-                } return true;
+                    return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+                }
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
 
             }
-            throw new Exception("Email is empty");
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
         }
 
-        public bool RejectUser(VerifyDto verifyDto)
+        public KeyValuePair<ReturnValue, bool> RejectUser(VerifyDto verifyDto)
         {
             if (!String.IsNullOrWhiteSpace(verifyDto.Email))
             {
                 bool? oldState = null;
                 LoggedDto loggedUser = _userRepo.FindUserByEmail(verifyDto.Email);
-                if (loggedUser == null) throw new Exception("User doesn't exist");
+                if (loggedUser == null) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+              
                 oldState = _userRepo.GetAcceptance(verifyDto.Email);
 
                 if (oldState != false)
@@ -248,13 +227,27 @@ namespace UserService.DeliverySystem_BAL.Services
                     if (_userRepo.RejectUser(verifyDto))
                     {
                         NotifyDelivererAboutRejection(verifyDto.Email);
-                        return true;
+                        return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
                     }
-                    return false;
-                } return true;
+                    return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false); 
+                }
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
             }
-            throw new Exception("Email is empty");
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
         }
+
+        public KeyValuePair<ReturnValue, bool> HandlePhotoUpload(byte[]? ImageData, string? ImageMimeType, string email)
+        {
+            if (String.IsNullOrWhiteSpace(email) || String.IsNullOrWhiteSpace(ImageMimeType))
+                return new KeyValuePair<ReturnValue, bool>(ReturnValue.EMPTY_FIELDS, false);
+
+            bool retVal = _userRepo.AddPhoto(ImageData, ImageMimeType, email);
+
+            if (!retVal) return new KeyValuePair<ReturnValue, bool>(ReturnValue.ERROR_OCCURED, false);
+            return new KeyValuePair<ReturnValue, bool>(ReturnValue.OK, true);
+        }
+
+
 
 
 
@@ -273,10 +266,10 @@ namespace UserService.DeliverySystem_BAL.Services
             message.Body = new TextPart(TextFormat.Html)
             {
                 Text =
-                "Dear " + username + 
-                "\n\n, your registration has been accepted." +
-                "\n\nYou can now sign into your account and enjoy the services provided by DeliverySystemApp!" +
-                "\n\n\n\nDeliverySystemApp Admin Team"
+                "Dear " + username +
+                ", <br /> <br />  Your registration has been accepted." +
+                "<br /> <br /> You can now sign into your account and enjoy the services provided by DeliverySystemApp!" +
+                "<br /> <br /> <br /> DeliverySystemApp Admin Team"
             };
 
             using var mail = new SmtpClient();
@@ -296,10 +289,10 @@ namespace UserService.DeliverySystem_BAL.Services
             message.Body = new TextPart(TextFormat.Html)
             {
                 Text =
-                "Dear " +
-                "\n\n, your registration has been rejected." +
-                "\n\nYou can still register as a customer and enjoy the services provided by DeliverySystemApp!" +
-                "\n\n\n\nDeliverySystemApp Admin Team"
+                "Dear " + email +
+                ", <br /><br />  Your registration has been rejected." +
+                "<br /> You can still register as a customer and enjoy the services provided by DeliverySystemApp!" +
+                "<br /> <br /><br />  DeliverySystemApp Admin Team"
             };
 
             using var mail = new SmtpClient();
@@ -307,13 +300,6 @@ namespace UserService.DeliverySystem_BAL.Services
             mail.Authenticate("valentinamijic@gmail.com", "rxiljvovoxhxqfty");
             mail.Send(message);
             mail.Disconnect(true);
-        }
-
-        public bool HandlePhotoUpload(byte[]? ImageData, string? ImageMimeType, string email)
-        {
-            if (String.IsNullOrWhiteSpace(email)) throw new Exception("User can not be null");
-
-            return _userRepo.AddPhoto(ImageData, ImageMimeType, email);
         }
     }
 }

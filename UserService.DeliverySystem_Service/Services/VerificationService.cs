@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DeliverySystem_Common.DTOs.User;
+using DeliverySystem_Common.Enums;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -29,14 +30,21 @@ namespace UserService.DeliverySystem_BAL.Services
         }
 
 
-        public TokenDto AddUser(UserDto userDto)
+        public KeyValuePair<ReturnValue, TokenDto> AddUser(UserDto userDto)
         {
+            if (String.IsNullOrWhiteSpace(userDto.Address) || String.IsNullOrWhiteSpace(userDto.Name) 
+                || String.IsNullOrWhiteSpace(userDto.Email) || String.IsNullOrWhiteSpace(userDto.Lastname)
+                || String.IsNullOrWhiteSpace(userDto.Username) || String.IsNullOrWhiteSpace(userDto.Password)
+                || userDto.BirthDate == new DateTime() || userDto.UserType < 0) 
+                
+                return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.EMPTY_FIELDS, null);
+
             // First check if user with same username and email already exists
             bool usernameExists = _verificationRepo.CheckIfUsernameExists(userDto.Username);
-            if (usernameExists) throw new Exception("Username with this username already exists");
+            if (usernameExists) return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.USERNAME_EXISTS, null);
 
             bool emailExists = _verificationRepo.CheckIfEmailExists(userDto.Email);
-            if (emailExists) throw new Exception("User with this email already exists");
+            if (emailExists) return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.EMAIL_EXISTS, null);
 
             HashPassword(userDto.Password, out string passwordHash);
             userDto.Password = passwordHash;
@@ -50,18 +58,20 @@ namespace UserService.DeliverySystem_BAL.Services
                 Text = token
             };
 
-            return tokenDto;
-
+            return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.OK, tokenDto);
         }
 
-        public TokenDto SignIn(UserSignInDto userDto)
+        public KeyValuePair<ReturnValue, TokenDto> SignIn(UserSignInDto userDto)
         {
+            if (String.IsNullOrWhiteSpace(userDto.Email) || String.IsNullOrWhiteSpace(userDto.Password))
+                return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.EMPTY_FIELDS, null);
+
             UserDto user = _verificationRepo.FindUser(userDto.Email);
-            if (user == null) throw new Exception("User doesn't exist");
+            if (user == null) return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.DOESNT_EXIST, null);
 
             bool? userAccepted = _verificationRepo.CheckIfUserAccepted(userDto.Email);
-            if (userAccepted == null) throw new Exception("Request is still in process!");
-            if (userAccepted == false) throw new Exception("User not accepted!");
+            if (userAccepted == null) return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.REQUEST_IN_PROCESS, null);
+            if (userAccepted == false) return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.NOT_ACCEPTED, null);
 
             if (user.Email == userDto.Email && user.Password != null)
             {
@@ -74,14 +84,16 @@ namespace UserService.DeliverySystem_BAL.Services
                         Text = token
                     };
 
-                    return tokenDto;
+                    return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.OK, tokenDto);
                 }
             }
-            throw new Exception("Provided email or password was not correct!");
+            return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.INCORRECT_CREDENTIALS, null);
         }
 
-        public TokenDto AddFacebookUser(FacebookDto fb)
+        public KeyValuePair<ReturnValue, TokenDto> AddFacebookUser(FacebookDto fb)
         {
+            if (String.IsNullOrWhiteSpace(fb.Email) || String.IsNullOrWhiteSpace(fb.Name) || string.IsNullOrWhiteSpace(fb.Lastname))
+                return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.EMPTY_FIELDS, null);
             // First check if user exists
             bool userExists = _verificationRepo.CheckIfUserExists(fb.Email);
 
@@ -102,7 +114,7 @@ namespace UserService.DeliverySystem_BAL.Services
                     Text = token
                 };
 
-                return tokenDto;
+                return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.OK, tokenDto);
             }
 
             // If user doesn't exist, create it and then login
@@ -115,7 +127,7 @@ namespace UserService.DeliverySystem_BAL.Services
                 Text = token2
             };
 
-            return tokenDto2;
+            return new KeyValuePair<ReturnValue, TokenDto>(ReturnValue.OK, tokenDto2);
         }
 
 

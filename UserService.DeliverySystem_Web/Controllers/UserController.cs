@@ -1,4 +1,5 @@
 ﻿using DeliverySystem_Common.DTOs.User;
+using DeliverySystem_Common.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserService.DeliverySystem_DAL.Abstract.Services;
@@ -22,92 +23,122 @@ namespace UserService.DeliverySystem_Web.Controllers
         [HttpGet]
         public ActionResult<LoggedDto> GetUser(string email)
         {
-            return _userService.FindUser(email);
+            KeyValuePair<ReturnValue, LoggedDto> ret = _userService.FindUser(email);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            return Ok(ret.Value);
         }
 
         [Route("changeName")]
         [HttpPut]
         public ActionResult <bool> ChangeName(NameHandleDto nameHandle)
         {
-            return _userService.HandleNameChange(nameHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandleNameChange(nameHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Name field can't be empty.");
+
+            return Ok(ret.Value);
         }
 
         [Route("changeUsername")]
         [HttpPut]
         public ActionResult<bool> ChangeUsername(UsernameHandleDto usernameHandle)
         {
-            return _userService.HandleUsernameChange(usernameHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandleUsernameChange(usernameHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.USERNAME_EXISTS) return BadRequest("Entered username already exists. Pick another!");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Username field can't be empty.");
+
+            return Ok(ret.Value);
         }
 
         [Route("changeLastname")]
         [HttpPut]
         public ActionResult<bool> ChangeLastname(LastnameHandleDto lastnameHandle)
         {
-            return _userService.HandleLastnameChange(lastnameHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandleLastnameChange(lastnameHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Lastname field can't be empty.");
+
+            return Ok(ret.Value);
         }
 
         [Route("changeAddress")]
         [HttpPut]
         public ActionResult<bool> ChangeAddress(AddressHandleDto addressHandle)
         {
-            return _userService.HandleAddressChange(addressHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandleAddressChange(addressHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Address field can't be empty.");
+
+            return Ok(ret.Value);
         }
 
         [Route("changeDate")]
         [HttpPut]
         public ActionResult<bool> ChangeDate(DateHandleDto dateHandle)
         {
-            return _userService.HandleDateChange(dateHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandleDateChange(dateHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Date field can't be empty.");
+
+            return Ok(ret.Value);
         }
 
         [Route("changePassword")]
         [HttpPut]
         public ActionResult<bool> ChangePassword(PasswordHandleDto passHandle)
         {
-            return _userService.HandlePasswordChange(passHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandlePasswordChange(passHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Password field can't be empty.");
+            else if (ret.Key == ReturnValue.INVALID_PASSWORD) return BadRequest("Invalid password was entered. Try again!");
+
+            return Ok(ret.Value);
         }
 
         [Route("addUsername")]
         [HttpPost]
         public ActionResult<bool> AddUsername(UsernameHandleDto usernameHandle)
         {
-            return _userService.HandleUsernameAdd(usernameHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandleUsernameAdd(usernameHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Username can't be empty.");
+            else if (ret.Key == ReturnValue.USERNAME_EXISTS) return BadRequest("Username already exists. Pick another!");
+
+            return Ok(ret.Value);
         }
 
         [Route("addAddress")]
         [HttpPost]
         public ActionResult<bool> AddAddress(AddressHandleDto addressHandle)
         {
-            return _userService.HandleAddressAdd(addressHandle);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandleAddressAdd(addressHandle);
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Address can't be empty.");
+
+            return Ok(ret.Value);
         }
 
         [Route("addDate")]
         [HttpPost]
         public ActionResult<DateTime?> AddDate(DateHandleDto dateHandle)
         {
-            return _userService.HandleDateAdd(dateHandle);
+            KeyValuePair<ReturnValue, DateTime?> ret = _userService.HandleDateAdd(dateHandle);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Date time can't be empty.");
+
+            return Ok(ret.Value);
         }
 
-        [Route("deliverers")]
-        [HttpGet]
-        public ActionResult<List<DelivererDto>> GetDeliverers()
-        {
-            return _userService.FindDeliverers();
-        }
-
-        [Route("verify")]
-        [HttpPut]
-        public ActionResult<bool> Verify(VerifyDto verifyDto)
-        {
-            return _userService.VerifyUser(verifyDto);
-        }
-
-        [Route("reject")]
-        [HttpPut]
-        public ActionResult<bool> Reject(VerifyDto verifyDto)
-        {
-            return _userService.RejectUser(verifyDto);
-        }
 
         [Route("addPhoto")]
         [HttpPost]
@@ -128,7 +159,42 @@ namespace UserService.DeliverySystem_Web.Controllers
             var imageMimeType = image.ContentType;
             var imageData = System.IO.File.ReadAllBytes(path);
 
-            return _userService.HandlePhotoUpload(imageData, imageMimeType, emailName);
+            KeyValuePair<ReturnValue, bool> ret = _userService.HandlePhotoUpload(imageData, imageMimeType, emailName);
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+            else if (ret.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("Photo can't be empty.");
+
+            return Ok(true);
+
         }
+
+        [Route("deliverers")]
+        [HttpGet]
+        public ActionResult<List<DelivererDto>> GetDeliverers()
+        {
+            return Ok(_userService.FindDeliverers());
+        }
+
+        [Route("verify")]
+        [HttpPut]
+        public ActionResult<bool> Verify(VerifyDto verifyDto)
+        {
+            KeyValuePair<ReturnValue, bool> ret = _userService.VerifyUser(verifyDto);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+
+            return Ok(true);
+        }
+
+        [Route("reject")]
+        [HttpPut]
+        public ActionResult<bool> Reject(VerifyDto verifyDto)
+        {
+            KeyValuePair<ReturnValue, bool> ret = _userService.RejectUser(verifyDto);
+
+            if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
+
+            return Ok(true);
+        }
+
     }
 }
