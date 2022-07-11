@@ -10,7 +10,7 @@ using RestaurantService.DeliverySystem_DAL.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<RestaurantDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Restaurant")));
+	options.UseSqlServer(builder.Configuration.GetConnectionString("Restaurant")));
 
 // Add services to the container.
 
@@ -21,21 +21,26 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("Cors", builder =>
-    {
-        builder.AllowAnyHeader()
-        .AllowAnyMethod()
-        .WithOrigins("http://localhost:4200")
-        .AllowCredentials();
-    });
+	options.AddPolicy("Cors", builder =>
+	{
+		builder.AllowAnyHeader()
+		.AllowAnyMethod()
+		.WithOrigins("http://localhost:4200")
+		.AllowCredentials();
+	});
 });
 
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<IProductService, RestaurantService.DeliverySystem_BAL.Services.ProductService>();
 
+
+builder.Services.AddTransient<IOrderRepository, OrderRepository>();
+builder.Services.AddTransient<IOrderService, RestaurantService.DeliverySystem_BAL.Services.OrderService>();
+
+
 var mapperConfig = new MapperConfiguration(mc =>
 {
-    mc.AddProfile(new MappingProfile());
+	mc.AddProfile(new MappingProfile());
 });
 
 
@@ -50,8 +55,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

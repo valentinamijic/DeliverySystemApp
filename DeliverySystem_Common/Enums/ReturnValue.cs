@@ -17,6 +17,10 @@ namespace DeliverySystem_Common.Enums
         INCORRECT_CREDENTIALS,
         DOESNT_EXIST,
         INVALID_PASSWORD,
+        INVALID_PRICE,
+        NO_COMPONENTS,
+        INVALID_AMOUNT,
+        ALREADY_EXISTS,
         ERROR_OCCURED
     }
 }
