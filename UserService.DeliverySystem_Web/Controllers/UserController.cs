@@ -1,5 +1,6 @@
 ﻿using DeliverySystem_Common.DTOs.User;
 using DeliverySystem_Common.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserService.DeliverySystem_DAL.Abstract.Services;
@@ -168,6 +169,7 @@ namespace UserService.DeliverySystem_Web.Controllers
         }
 
         [Route("deliverers")]
+        [Authorize(Roles = "1")]
         [HttpGet]
         public ActionResult<List<DelivererDto>> GetDeliverers()
         {
@@ -175,24 +177,30 @@ namespace UserService.DeliverySystem_Web.Controllers
         }
 
         [Route("verify")]
+        [Authorize(Roles = "1")]
         [HttpPut]
         public ActionResult<bool> Verify(VerifyDto verifyDto)
         {
+            Thread.BeginCriticalRegion();
             KeyValuePair<ReturnValue, bool> ret = _userService.VerifyUser(verifyDto);
 
             if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
 
+            Thread.EndCriticalRegion();
             return Ok(true);
         }
 
         [Route("reject")]
+        [Authorize(Roles = "1")]
         [HttpPut]
         public ActionResult<bool> Reject(VerifyDto verifyDto)
         {
+            Thread.BeginCriticalRegion();
             KeyValuePair<ReturnValue, bool> ret = _userService.RejectUser(verifyDto);
 
             if (ret.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
 
+            Thread.EndCriticalRegion();
             return Ok(true);
         }
 

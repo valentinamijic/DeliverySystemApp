@@ -284,7 +284,7 @@ namespace UserService.DeliverySystem_BAL.Services
 
             message.From.Add(MailboxAddress.Parse("valentinamijic@gmail.com"));
             message.To.Add(MailboxAddress.Parse("valentinamijic@gmail.com")); //here goes actual mail
-            message.Subject = "DeliverySystemApp - REGISTRATION REJECTTED";
+            message.Subject = "DeliverySystemApp - REGISTRATION REJECTED";
 
             message.Body = new TextPart(TextFormat.Html)
             {

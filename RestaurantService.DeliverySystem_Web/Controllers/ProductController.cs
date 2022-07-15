@@ -1,5 +1,6 @@
 ﻿using DeliverySystem_Common.DTOs.Restaurant;
 using DeliverySystem_Common.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantService.DeliverySystem_DAL.Abstract.Services;
@@ -18,6 +19,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("registerProduct")]
+        [Authorize(Roles = "1")]
         [HttpPost]
         public ActionResult<bool> AddProduct(ProductDto product)
         {
@@ -32,6 +34,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("products")]
+        [Authorize(Roles = "2")]
         [HttpGet]
         public ActionResult<List<ProductDto>> GetProducts()
         {

@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -22,6 +24,8 @@ builder.Services.AddCors(options =>
 	});
 });
 
+
+builder.Host.UseNLog();
 builder.Services.AddOcelot();
 
 var app = builder.Build();
@@ -36,6 +40,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("Cors");
 app.UseOcelot().Wait();
+
 
 app.UseAuthorization();
 

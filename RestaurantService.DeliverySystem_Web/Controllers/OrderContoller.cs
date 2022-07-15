@@ -1,5 +1,6 @@
 ﻿using DeliverySystem_Common.DTOs.Restaurant;
 using DeliverySystem_Common.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantService.DeliverySystem_DAL.Abstract.Services;
@@ -19,6 +20,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("order")]
+        [Authorize(Roles = "2")]
         [HttpPost]
         public ActionResult<int?> MakeOrder(CartDto cart)
         {
@@ -32,6 +34,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("orders")]
+        [Authorize(Roles = "3")]
         [HttpGet]
         public ActionResult<List<OrderDisplayDto>> GetAllOrdersInProgress()
         {
@@ -39,14 +42,17 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("accept")]
+        [Authorize(Roles = "3")]
         [HttpPut]
         public ActionResult<bool> AcceptOrder(AcceptOrderDto orderDetalis)
         {
+            Thread.BeginCriticalRegion();
             KeyValuePair<ReturnValue, bool> retVal = _orderService.AcceptOrder(orderDetalis);
 
             if (retVal.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");
             else if (retVal.Key == ReturnValue.EMPTY_FIELDS) return BadRequest("One or more errors occured.");
 
+            Thread.EndCriticalRegion();
             return Ok(retVal.Value);
         }
 
@@ -61,7 +67,6 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
             return Ok(retVal.Value);
         }
 
-
         [Route("confirm")]
         [HttpPut]
         public ActionResult<bool> MakeOrderFinished(FinishedOrderDto finishedOrder)
@@ -75,6 +80,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("orderStatus/{orderId}")]
+        [Authorize(Roles = "2")]
         [HttpGet]
         public ActionResult<DateTime?> GetOrderStatus(int orderId)
         {
@@ -88,6 +94,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("activeOrder/{email}")]
+        [Authorize(Roles = "2")]
         [HttpGet]
         public ActionResult<int?> GetUserActiveOrder(string email)
         {
@@ -96,6 +103,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("orderInDelivery/{email}")]
+        [Authorize(Roles = "2")]
         [HttpGet]
         public ActionResult<DateTime?> GetUserOrderInDelivery(string email)
         {
@@ -104,6 +112,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("orderDelivered/{orderId}")]
+        [Authorize(Roles = "2")]
         [HttpGet]
         public ActionResult<bool> CheckIfOrderDelivered(int orderId)
         {
@@ -112,6 +121,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("finishedOrders/{email}")]
+        [Authorize(Roles = "2")]
         [HttpGet]
         public ActionResult<List<OrderDisplayDto>> GetFinishedOrders(string email)
         {
@@ -126,6 +136,7 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         }
 
         [Route("delivererOrders/{email}")]
+        [Authorize(Roles = "3")]
         [HttpGet]
         public ActionResult<List<OrderDisplayDto>> GetDelivererFinishedOrders(string email)
         {
