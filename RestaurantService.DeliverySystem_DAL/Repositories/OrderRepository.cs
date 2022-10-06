@@ -32,7 +32,8 @@ namespace RestaurantService.DeliverySystem_DAL.Repositories
 
             Order newOrder = new Order()
             {
-                OrderStatus = OrderStatus.IN_PROGRESS
+                OrderStatus = OrderStatus.IN_PROGRESS,
+                StripeToken = cartDto.StripeToken
             };
 
             foreach (CartItem cartItem in cart.CartItems)

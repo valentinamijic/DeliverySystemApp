@@ -22,8 +22,9 @@ namespace RestaurantService.DeliverySystem_Web.Controllers
         [Route("order")]
         [Authorize(Roles = "2")]
         [HttpPost]
-        public ActionResult<int?> MakeOrder(CartDto cart)
+        public ActionResult<int?> MakeOrder(CartDto cart) 
         {
+            if (String.IsNullOrEmpty(cart.StripeToken)) return BadRequest("Payment unsuccessfull.");
             KeyValuePair<ReturnValue, int?> retVal = _orderService.MakeOrder(cart);
 
             if (retVal.Key == ReturnValue.ERROR_OCCURED) return BadRequest("One or more errors occured.");

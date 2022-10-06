@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestaurantService.DeliverySystem_DAL.Context;
 
@@ -11,9 +12,10 @@ using RestaurantService.DeliverySystem_DAL.Context;
 namespace RestaurantService.DeliverySystem_DAL.Migrations
 {
     [DbContext(typeof(RestaurantDbContext))]
-    partial class RestaurantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221003221206_StripeToken")]
+    partial class StripeToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,6 +41,10 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripeToken")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -117,10 +123,6 @@ namespace RestaurantService.DeliverySystem_DAL.Migrations
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
-
-                    b.Property<string>("StripeToken")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("TimeOfAcceptingOrder")
                         .HasColumnType("datetime2");

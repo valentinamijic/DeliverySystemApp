@@ -14,5 +14,6 @@ namespace DeliverySystem_Common.DTOs.Restaurant
         public string Address { get; set; }
         public int TotalAmount { get; set; }
         public DateTime TimeOfMakingOrder { get; set; }
+        public string StripeToken { get; set; }
     }
 }

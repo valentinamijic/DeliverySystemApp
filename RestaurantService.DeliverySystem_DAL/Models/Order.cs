@@ -16,5 +16,6 @@ namespace RestaurantService.DeliverySystem_DAL.Models
         public string? Deliverer { get; set; }
 
         public DateTime? TimeOfAcceptingOrder { get; set; }
+        public string StripeToken { get; set; }
     }
 }
