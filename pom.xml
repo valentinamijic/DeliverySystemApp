@@ -7,8 +7,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>user</module>
-        <module>restaurant</module>
+        <module>UserService</module>
+        <module>RestaurantService</module>
     </modules>
 
 </project>
